@@ -1,2 +1,2 @@
-# MWA-final-project-job-portal
+# MWA-final-project-online-job-portal
 Class Final Project
