@@ -22,31 +22,7 @@ export class RecruiterloginComponent implements OnInit {
   }
   login() {
     this.router.navigate(['rdashboard/postedjobs']);
-    // if (!this.loginForm.valid) {
-    //   console.log('Invalid'); return;
-    // }
-    // //console.log(JSON.stringify(this.loginForm.value.username));
-    // this.recservice.login(JSON.stringify(this.loginForm.value))
-    //   .subscribe(
-    //     (response: any) => {
-    //       if (response.status && response.status === 1) {
-    //         this.loginsuccess = "Login Success-Going to Dashboard";
-    //         localStorage.setItem('token',response.data.token);
-    //        let payload=this.recservice.getpayload();
-    //       localStorage.setItem('currentrecruiter',payload.companyName);
-    //         this.loginForm.reset();
-    //         setTimeout(() => {
-              
-    //          //localStorage.setItem('currentemployeeid',payload.id);
-    //           this.router.navigate(['rdashboard/postedjobs']);
-    //         }, 3000);
-    //       }
-    //       else {
-    //         this.loginfail = "Invalid Username/Password";
-    //       }
-    //     },
-    //     (error) => { console.log(error); }
-    //   );
+
   }
   get form(){
     return this.loginForm.controls;

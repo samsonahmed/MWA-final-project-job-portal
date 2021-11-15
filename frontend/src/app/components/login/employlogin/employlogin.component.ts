@@ -22,38 +22,12 @@ export class EmployloginComponent implements OnInit {
   }
   login() {
     this.router.navigate(['dashboard/jobs']);
-    // if (!this.loginForm.valid) {
-    // //   console.log('Invalid'); return;
-    // // }
-    // //console.log(JSON.stringify(this.loginForm.value.username));
-    // this.empservice.login(JSON.stringify(this.loginForm.value))
-    //   .subscribe(
-    //     (response: any) => {
-    //       if (response.status && response.status === 1) {
-    //         this.loginsuccess = "Login Success-Going to Dashboard";
-    //         localStorage.setItem('token',response.data.token);
-    //         let payload=this.empservice.getpayload();
-    //           localStorage.setItem('currentemployee',payload.username);
-    //         this.loginForm.reset();
-    //         setTimeout(() => {
-              
-    //          //localStorage.setItem('currentemployeeid',payload.id);
-    //           this.router.navigate(['dashboard/jobs']);
-    //         }, 2000);
-    //       }
-    //       else {
-    //         this.loginfail = "Invalid Username/Password";
-    //       }
-    //     },
-    //     (error) => { console.log(error); }
-    //   );
+
   }
   getform(){
     return this.loginForm.controls;
   }
-  // clearForm(){
-  //   (<HTMLFormElement>document.getElementById("loginform")).reset();
-  //  }
+
 
 
 
