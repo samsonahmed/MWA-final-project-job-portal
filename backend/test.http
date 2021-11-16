@@ -1,0 +1,86 @@
+#### this for recruiters
+POST http://localhost:3000/recruiters HTTP/1.1
+content-type: application/json
+
+
+  {
+  "companyName": "Keforce",
+  "password": "samson",
+  "email": "samson@gmail.com",
+  "experience": "4-5",
+  "about": "Working hard pay back well"
+  }
+
+####
+POST  http://localhost:3000/recruiters/addJobs/homeDepoty
+content-type: application/json
+    
+{
+  "jobRole": "Front end developer",
+  "experience": "8",
+  "skills":"Back end developer",
+  "jobDescription": "Working hard",
+  "jobType": "Full time"
+}
+
+####
+
+POST  http://localhost:3000/seekers/applyjobs/samson/keforce
+content-type: application/json
+    
+{
+  "jobRole": "CPT",
+  "experience": "7",
+  "skills":"Full stack developer",
+  "jobDescription": "Working hard",
+  "jobType": "Full time"
+}
+
+###
+PATCH http://localhost:3000/recruiters/addSeekers/miu 
+content-type: application/json
+
+{
+   "name": "Samson",
+   "email": "samson@gmail.com",
+   "phone": "098976797890",
+   "location": "Iowa"
+}
+
+####
+POST http://localhost:3000/recruiters/login HTTP/1.1
+content-type: application/json
+
+{
+  "companyName": "Keforce",
+  "password": "samson"
+}
+
+#### this for Seekers
+
+POST http://localhost:3000/seekers HTTP/1.1
+content-type: application/json
+
+  {
+  "name": "Aboneh",
+  "password": "21sami",
+  "email": "samsonahmed",
+  "phone":"080970808",
+  "experience": "7",
+  "location": "FairFeild",
+  "gender": "Male",
+  "interests":"Front End"
+  }
+  
+###
+POST http://localhost:3000/seekers/login HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Abonehe",
+  "password": "21sami"
+}
+
+#### 
+
+GET http://localhost:3000/seekers/getJobs
