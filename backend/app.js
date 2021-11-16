@@ -4,10 +4,10 @@ const recruiter = require("./routes/recruiter");
 const seekers=require("./routes/seeker")
 const cors=require('cors')
 const app = express();
-
+let password = "*********";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-let password = "21samgmail";
+
 mongoose
   .connect(
     `mongodb+srv://samson:${password}@cluster0.l6tcx.mongodb.net/jobportal?retryWrites=true&w=majority`,
