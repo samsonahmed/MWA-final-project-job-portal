@@ -1,0 +1,33 @@
+
+<div class="container mt-3">
+    <div class="row" *ngIf="successmsg; else nojobsmessage">
+        <div class="table-responsive">
+        <table class="table" >
+            <thead class="bg-info">
+                <tr>
+                    <th *ngFor="let key of headers">{{key}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let job of applied" >
+                    <td>{{job.companyName}}</td>
+                    <td>{{job.jobRole}}</td>
+                    <td>{{job.jobType}}</td>
+                    <td >{{job.experience}}</td>
+                    <td><button class="btn btn-success" style="width:100%;height:auto;border-radius: 45px;"
+                            disabled>Applied</button>
+                        <!-- <small>{{job.jobDetails.postedDate}}</small> -->
+                    </td>
+                
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <ng-template #nojobsmessage>
+        <div class="text-center">
+            <h3>{{nojobs}}</h3>
+        </div>
+    </ng-template>
+    <router-outlet></router-outlet>
+</div>
