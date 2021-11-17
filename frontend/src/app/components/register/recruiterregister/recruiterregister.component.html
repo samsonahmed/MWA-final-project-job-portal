@@ -20,30 +20,37 @@
                     <label for="companyname" class="col-sm-3 control-label">CompanyName</label>
                     <div class="col-sm-9">
                         <input type="text" id="companyname" formControlName="companyName" placeholder="companyname" class="form-control"  autofocus>
+                        <div *ngIf="!RecruiterRegisterForm.get('companyName')?.valid && RecruiterRegisterForm.get('companyName')?.touched" style="color:red">
+                            CompanyName Name is required
+                          </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">Password*</label>
                     <div class="col-sm-9">
                         <input type="password" id="password" formControlName="password" placeholder="Password" class="form-control">
+                        <div *ngIf="!RecruiterRegisterForm.get('password')?.valid && RecruiterRegisterForm.get('password')?.touched" style="color:red">
+                            Invalid Password
+                          </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-sm-3 control-label">Email* </label>
                     <div class="col-sm-9">
-                        <input type="email" formControlName="companyMail" id="email" placeholder="mail" class="form-control" name= "email">
+                        <input type="email" formControlName="email" id="email" placeholder="mail" class="form-control" name= "email">
+                        <div *ngIf="!RecruiterRegisterForm.get('email')?.valid && RecruiterRegisterForm.get('email')?.touched" style="color:red">
+                           Invalid Email Address
+                          </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="industry" class="col-sm-3 control-label">Industry</label>
-                    <div class="col-sm-9">
-                        <input type="text" id="industry" formControlName="industryType" placeholder="Last Designation" class="form-control"  >
-                    </div>
-                </div>
+               
                 <div class="form-group">
                     <label for="exp" class="col-sm-3 control-label">Experience </label>
                     <div class="col-sm-9">
-                        <input type="number" id="exp" formControlName="yearsofExp" placeholder="Exp. In Years" class="form-control">
+                        <input type="number" id="exp" formControlName="experience" placeholder="Exp. In Years" class="form-control">
+                        <div *ngIf="!RecruiterRegisterForm.get('experience')?.valid && RecruiterRegisterForm.get('experience')?.touched" style="color:red">
+                            year of experience is required
+                          </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,7 +60,7 @@
                     </div>
                 </div>
                
-                <button type="submit" class="btn btn-primary"  (click)="register_rectuiter()">Register</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!RecruiterRegisterForm.valid" (click)="register_rectuiter()">Register</button>
             </form> <!-- /form -->
         </div>
     </div>
