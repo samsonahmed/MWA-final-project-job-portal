@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router,ActivatedRoute} from '@angular/router';
+import { EmployeeService } from 'src/app/services/employee.service';
 // import {ForseekerService} from '../../forseeker.service';
 @Component({
   selector: 'app-dashboard',
@@ -8,14 +9,14 @@ import {Router,ActivatedRoute} from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private router:Router,private activeroute:ActivatedRoute) { }
+  constructor(private router:Router,private activeroute:ActivatedRoute,private employeeService:EmployeeService) { }
   username:any;
   ngOnInit() {
-    this.username=localStorage.getItem('currentemployee');
+    this.username=localStorage.getItem('name');
   }
   logoutemployee()
   {
-    // this.seekerservie.logout();
+    this.employeeService.logout();
     this.router.navigate(['login/emp_login'],)
   }
   jobs()

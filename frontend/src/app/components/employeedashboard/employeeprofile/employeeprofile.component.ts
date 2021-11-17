@@ -55,7 +55,7 @@ export class EmployeeprofileComponent implements OnInit {
     )
   }
   logout() {
-    // this.seekerservice.logout();
+    this.seekerservice.logout();
     this.router.navigate(['login/emp_login']);
   }
   selectimage(event:any) {

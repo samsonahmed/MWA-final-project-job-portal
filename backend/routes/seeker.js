@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 const Jobs = require("../models/jobs");
 const Seeker = require("../models/seeker");
 const Recruiter = require("../models/recruiter");
 const AppliedJobs = require("../models/appliedJobs");
 router.get("/", (req, res, next) => {
-  Seeker.find()
+  Jobs.find()
     .exec()
-    .then((docs) => {
+    .then((docs)=> {
       console.log(docs);
-      //   if (docs.length >= 0) {
       res.status(200).json(docs);
     })
     .catch((err) => {
@@ -20,6 +20,20 @@ router.get("/", (req, res, next) => {
       });
     });
 });
+router.get("/getJobs", async (req, res, next) => {
+  await Jobs.find()
+  .exec()
+  .then((docs)=> {
+    console.log("this my doc "+docs);
+    res.status(200).json(docs);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).json({
+      error: err,
+    });
+  });
+})
 router.get("/:name", async (req, res, next) => {
   await Seeker.findOne({ name: req.params.name })
     .exec()
@@ -34,29 +48,30 @@ router.get("/:name", async (req, res, next) => {
       });
     });
 });
-router.get("/getJobs", (req, res, next) => {
-  Jobs.find()
-    .exec()
-    .then((docs) => {
-      console.log(docs);
-      //   if (docs.length >= 0) {
-      res.status(200).json(docs);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
+router.get("/getJobs", async (req, res, next) => {
+  await Jobs.find()
+  .exec()
+  .then((docs)=> {
+    console.log("this my doc "+docs);
+    res.json(docs);
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).json({
+      error: err,
     });
-});
+  });
+})
 router.get("/appliedJobs/:name", (req, res, next) => {
-  AppliedJobs.find({ name: req.params.name.toLowerCase() })
+  console.log("inside this :"+req.params.name)
+  AppliedJobs.find({ 'seeker.name': req.params.name.toLowerCase() })
+  .select("-seeker")
     .exec()
     .then((docs) => {
-      if (docs) {
-        res.json(docs);
+      if (docs.length> 0) {
+        res.json({docs,success:1});
       } else {
-        res.json({ message: "No Job Applied Found" });
+        res.json({ success: 0});
       }
     })
     .catch((err) => {
@@ -66,7 +81,14 @@ router.get("/appliedJobs/:name", (req, res, next) => {
       });
     });
 });
-router.post("/applyjobs/:name/:companyName", async (req, res, next) => {
+router.post("/applyjobs/:name/:companyName/:job_id/", async (req, res, next) => {
+  console.log(req.params.name+" "+req.params.companyName+" "+req.params.job_id);
+  const result= await AppliedJobs.findOne({_id:req.params.job_id});
+  if(result){
+     console.log("successfully")
+      res.json({success:0});
+  }
+  else{
   let name = "";
   let email = "";
   let phone = "";
@@ -82,12 +104,27 @@ router.post("/applyjobs/:name/:companyName", async (req, res, next) => {
       location = docs.location.toString();
       interests = docs.interests.toString();
     });
-
+    let jobRole='';
+    let experience='';
+    let skills='';
+    let jobDescription='';
+    let jobType=''
+    await Jobs.findOne({ name: req.params.name.toLowerCase() })
+    .exec()
+    .then((docs) => {
+      console.log(docs);
+      jobRole= docs.jobRole.toString();
+      experience = docs.experience.toString();
+      skills = docs.skills.toString();
+      jobDescription = docs.jobDescription.toString();
+      jobType = docs.jobType.toString();
+    });
   const date = new Date();
   const postedDate =
     date.getUTCFullYear() + "-" + date.getUTCMonth() + "-" + date.getUTCDate();
   const appliedjob = new AppliedJobs({
-    _id: new mongoose.Types.ObjectId(),
+    // _id: new mongoose.Types.ObjectId(),
+    _id:req.params.job_id,
     companyName: req.params.companyName.toLowerCase(),
     seeker: {
       name: name,
@@ -96,11 +133,11 @@ router.post("/applyjobs/:name/:companyName", async (req, res, next) => {
       interests: interests,
       location: location,
     },
-    jobRole: req.body.jobRole,
-    experience: req.body.experience,
-    skills: req.body.skills,
-    jobDescription: req.body.jobDescription,
-    jobType: req.body.jobType,
+    jobRole: jobRole,
+    experience: experience,
+    skills: skills,
+    jobDescription: jobDescription,
+    jobType: jobType,
     postedDate: postedDate,
   });
   appliedjob
@@ -113,21 +150,34 @@ router.post("/applyjobs/:name/:companyName", async (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({
+      res.json({
         error: err,
       });
     });
+  }
 });
 router.post("/login", async (req, res) => {
-  const result = await Seeker.findOne({
+  const name = await Seeker.findOne({
     name: req.body.name.toLowerCase(),
     password: req.body.password,
-  });
-  console.log(result);
-  if (result) {
-    res.status(200).json(result);
+  }).exec()
+  .then((docs)=>{
+    if(docs){
+    return docs.name.toString();
+    }
+    else{
+      return undefined;
+    }
+  })
+  console.log(name);
+  if(name) {
+      jwt.sign({name}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+      res.json({
+        token,name,success:1
+      });
+    });
   } else {
-    res.status(404).json({ success: 0 });
+    res.json({success:0});
   }
 });
 router.post("/", (req, res, next) => {

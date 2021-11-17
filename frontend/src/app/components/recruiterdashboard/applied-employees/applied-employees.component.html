@@ -1,0 +1,43 @@
+
+<div class="row">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6" >
+        <div class="alert alert-success" *ngIf="applied;">{{sent}}</div>
+    </div>
+    
+</div>
+<div class="conatiner mt-3 ">
+    <div class="row">
+        <table class="table">
+            <thead class="bg-info">
+                <tr>
+                    <th *ngFor="let key of headers">{{key}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let info of seekersInfo" >
+                    <td>{{info.seeker.name}}</td>
+                    <td>{{info.seeker.email}}</td>
+                    <td>{{info.seeker.phone}}</td>
+                    <td >{{info.seeker.location}}</td>
+                    <td>{{info.seeker.interests}} </td>
+    
+                    <td>{{info.jobRole}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" (click)="call_for_interview(info.seeker.email)">
+                            <span class="fa fa-check">accept</span>
+                          </button>
+                          <button type="button" class="btn btn-danger" (click)="reject(info.seeker.email)">
+                            <span class="fa fa-close">decline</span>
+                          </button>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+      <!-- <ng-template #Noapplied>
+          <div class="text-center text-primary">
+              <h2>{{notapplied}}</h2>
+          </div>
+      </ng-template> -->
+</div>
