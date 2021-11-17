@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-let password = "21samgmail";
+
 mongoose
   .connect(
     `mongodb+srv://samson:${password}@cluster0.l6tcx.mongodb.net/jobportal?retryWrites=true&w=majority`,
