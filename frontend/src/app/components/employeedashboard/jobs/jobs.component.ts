@@ -20,15 +20,15 @@ headers=['Company Name','Job Role','Skills','Job Type','Experience','posted Date
   ngOnInit() {
   this.getjobs();
   }
-
   getjobs()
   {
     this.employeeService.getJobs().subscribe(
       (response:any)=>
     {
-      if(response && response.length>0)
+      if(response)
       {
         this.jobs=response;
+        console.log(this.jobs);
         this.totaljobs=response.length;
       } 
     },
@@ -40,28 +40,26 @@ headers=['Company Name','Job Role','Skills','Job Type','Experience','posted Date
   apply(jobapply:any)
   {
     console.log(jobapply);
-    // this.seekerservice.applyjob(jobapply).subscribe(
-    //   (response:any)=>{
-    //     if(response.status && response.status==1){
-    //       //console.log(response);
-    //      // 
-    //      this.appliedmessage=response.message;
-    //      setTimeout(()=>{
-    //       this.appliedmessage='';
-    //       this.getjobs();
-    //      },2000) ;
-    //     }else{
-    //       this.alreadyapplied=response.message; 
-    //       setTimeout(()=>{
-    //         this.alreadyapplied='';
-    //         //this.getjobs();
-    //        },1000);
-    //     }
+    this.employeeService.applyjob(jobapply).subscribe(
+      (response:any)=>{
+        if(response.success===1){
+         this.appliedmessage="Applied successfully";
+         setTimeout(()=>{
+          this.appliedmessage='';
+          this.getjobs();
+         },2000) ;
+        }else{
+          this.alreadyapplied="already applied "; 
+          setTimeout(()=>{
+            this.alreadyapplied='';
+            this.getjobs();
+           },1000);
+        }
         
-    //   },(err)=>{
-    //     this.errormessage=err.message;
-    //   }
-    // );
+      },(err:any)=>{
+        this.errormessage=err.message;
+      }
+    );
     
   }
 }

@@ -14,9 +14,8 @@ nojobs:any;
 errormsg:any;
 successmsg:boolean=false;
 constructor(private router:Router,private activeroute:ActivatedRoute,private employeeService:EmployeeService) { 
-  console.log(this.headers);
-}
 
+}
   ngOnInit() {
     this.appliedjobs();
   }
@@ -24,14 +23,15 @@ constructor(private router:Router,private activeroute:ActivatedRoute,private emp
   {
     this.employeeService.getAppliedJobs().subscribe(
       (response:any)=>{
-        if(response && response.length > 0){
+        if(response.success===1){
           console.log(response)
-          this.applied=response;
+          this.applied=response.docs;
+          console.log("this is applied "+this.applied)
           this.successmsg=true;
         }
        
       else{
-        this.nojobs=response.message;
+        this.nojobs="No Jobs Applied";
         //console.log(this.applied);
       }
     },(error)=>{
