@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { fork } = require('child_process');
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 const Jobs = require("../models/jobs");
 const Recruiter = require("../models/recruiter");
 const AppliedJob = require("../models/appliedJobs");
@@ -127,15 +129,27 @@ router.patch("/addJobs/:companyName", async (req, res, next) => {
   res.json({ sucess: 1 });
 });
 router.post("/login", async (req, res) => {
-  const result = await Recruiter.findOne({
-    companyName: req.body.companyName.toLowerCase(),
+  const name = await Recruiter.findOne({
+    name: req.body.companyName.toLowerCase(),
     password: req.body.password,
-  });
-  console.log(result);
-  if (result) {
-    res.status(200).json(result);
+  }).exec()
+  .then((docs)=>{
+    if(docs){
+    return docs.companyName.toString();
+    }
+    else{
+      return undefined;
+    }
+  })
+  console.log(name);
+  if(name) {
+      jwt.sign({name}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
+      res.json({
+        token,name,success:1
+      });
+    });
   } else {
-    res.status(404).json({ success: 0 });
+    res.json({success:0});
   }
 });
 router.patch("/addSeekers/:companyName", async (req, res, next) => {
@@ -153,5 +167,12 @@ router.patch("/addSeekers/:companyName", async (req, res, next) => {
   await result.save();
   res.json({ sucess: 1 });
 });
-
+router.get('/send/:email/', (req, res) => {
+  console.log(req.params.email);
+  const compute = fork('childprocess.js');
+  compute.send(req.params.email);
+  compute.on('message', ()=>{
+     res.json({success:1});
+  })
+});
 module.exports = router;
