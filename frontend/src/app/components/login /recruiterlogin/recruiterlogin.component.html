@@ -21,6 +21,9 @@ box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.2);">
       <div class="form-group">
         <label for="exampleInputEmail1">CompanyName</label>
         <input formControlName="companyName" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter companyName">
+        <div *ngIf="!loginForm.get('companyName')?.valid && loginForm.get('companyName')?.touched" style="color:red">
+         Company Name is required
+        </div>
        </div>
       <div >
         <!-- <p class="alert alert-danger" *ngIf="form.companyName.errors?.required" >CompanyName is required</p> -->
@@ -28,13 +31,16 @@ box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.2);">
       <div class="form-group">
         <label for="passwordInput">Password</label>
         <input formControlName="password" type="password" class="form-control" id="passwordInput" aria-describedby="passHelp" placeholder="password">
+        <div *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched" style="color:red">
+          Invalid Password
+         </div>
       </div>
       <div >
         <!-- <p class="alert alert-danger" *ngIf="form.password?.errors?.required" >Password is required</p> -->
       </div>
       <div class="form-group" style="text-align:center;">
-          <button type="button" class="btn btn-dark" (click)="login()">Log in</button>
-          <button type="button" class="btn btn-secondary" (click)="moveToRegister()">Register</button>
+          <button type="button" class="btn btn-primary" [disabled]="!loginForm.valid" (click)="login()">Log in</button>
+          <button type="button" class="btn btn-success" (click)="moveToRegister()">Register</button>
       </div>
     </form>
   </div>
